@@ -24,9 +24,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
        name: kaktwoos-ocl-win
-       path: | 
-        .\kaktwoos-ocl.exe
-        .\kaktwoos-ocl-amd.exe
+       path: .\kakt*.exe
 
   linux_opencl:
     name: opencl/release/linux
