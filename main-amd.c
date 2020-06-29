@@ -28,6 +28,8 @@
 #endif
 
 #include "boinc_api.h"
+#include "filesys.h"
+#include "util.h"
 
 #define KERNEL_BUFFER_SIZE (0x4000)
 #define MAX_SEED_BUFFER_SIZE (0x10000)
@@ -331,5 +333,5 @@ boinc_init_options(&options);
     fflush(stderr);
     void boinc_end_critical_section();
     boinc_finish(0);
-	
+
 }
