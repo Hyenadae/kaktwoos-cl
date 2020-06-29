@@ -2,4 +2,7 @@
 
 # Kaktwoos OpenCL
 
-The OpenCL version of the Kaktwoos CUDA project
+
+The OpenCL version of the Kaktwoos CUDA project. 
+Now with proper BOINC api integration, multi-gpu and checkpoint save/restore support. 
+
