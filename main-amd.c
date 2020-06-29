@@ -23,7 +23,7 @@
 #else
 #ifdef _WIN32
 #include "boinc_win.h"
-#endif 
+#endif
 #endif
 
 #include "boinc_api.h"
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 BOINC_OPTIONS options;
 
 boinc_options_defaults(options);
-options.normal_thread_priority = true; 
+options.normal_thread_priority = true;
 boinc_init_options(&options);
 
     //boinc_init();
@@ -118,7 +118,7 @@ boinc_init_options(&options);
     };
 
 	fflush(stderr);
-	
+
     FILE *kernel_file = boinc_fopen("kaktwoos.cl", "r");
     if (!kernel_file) {
         printf("Failed to open kernel");
@@ -132,16 +132,16 @@ boinc_init_options(&options);
 
 	APP_INIT_DATA aid;
 	boinc_get_init_data(aid);
-	
+
 	if (aid.gpu_device_num >= 0) {
 	 gpuIndex = aid.gpu_device_num;
 	 fprintf(stderr,"boinc gpu %i gpuindex: %i \n", aid.gpu_device_num, gpuIndex);
-	} 
+	}
 	else
 	{
 	fprintf(stderr,"stdalone gpuindex % \n", gpuIndex);
 	}
-	
+
     cl_platform_id platform_id = NULL;
     cl_device_id *device_ids;
     cl_uint num_devices;
@@ -193,8 +193,8 @@ boinc_init_options(&options);
     check(clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&data), "clSetKernelArg (0) ");
     check(clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&seeds), "clSetKernelArg (1) ");
 
-    size_t work_unit_size = 1048576;
-    size_t block_size = 256;
+    size_t work_unit_size = 4194304;
+    size_t block_size = 64;
 
     arguments[1] = work_unit_size;
 
@@ -215,7 +215,7 @@ boinc_init_options(&options);
      fprintf(stderr,"No checkpoint to load\n");
      }
      else {
-		 
+
 	    void boinc_begin_critical_section();
         struct checkpoint_vars data_store;
 

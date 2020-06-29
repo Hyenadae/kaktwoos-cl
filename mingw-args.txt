@@ -1,0 +1,3 @@
+g++ -m64 -Ofast -lstdc++ ./main.c -o kaktwoos-boincapi.exe -Iboinc/ -Iboinc/lib/ -Lboinc/lib/x86/ -lboinc_api -lboinc -lOpenCL -DWIN64 -D_WIN64
+
+.\kaktwoos-boincapi.exe --device 0 -s 4500000000 -e 6000000000 -cs 9567961692053 -n1 856 -n2 344 -n3 840 -di 0 -ch 12
