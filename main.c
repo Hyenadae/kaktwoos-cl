@@ -331,6 +331,5 @@ boinc_init_options(&options);
     fflush(stderr);
     void boinc_end_critical_section();
     int boinc_finish(int status);
-    return 0;
 
 }
