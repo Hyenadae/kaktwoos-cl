@@ -4,6 +4,7 @@
 #include <sys/time.h>
 #include <string.h>
 #include <time.h>
+#define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 #include <stdbool.h>
 

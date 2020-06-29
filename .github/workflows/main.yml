@@ -17,16 +17,16 @@ jobs:
     - name: build
       run: |
        echo "##[add-path]D:\a\kaktwoos-cl\kaktwoos-cl\lib\x86_64\;D:\a\kaktwoos-cl\kaktwoos-cl\include\"
-       g++ -static -m64 -Ofast -lstdc++ .\main.c -o kaktwoos-ocl.exe -LD:\a\kaktwoos-cl\kaktwoos-cl\lib\x86_64\ -ID:\a\kaktwoos-cl\kaktwoos-cl\include\ -ID:\a\kaktwoos-cl\kaktwoos-cl\boinc -ID:\a\kaktwoos-cl\kaktwoos-cl\boinc\win\ -LD:\a\kaktwoos-cl\kaktwoos-cl\boinc\lib\win\ -lboinc_api -lboinc -lboinc_opencl -lOpenCL -D_WIN64 -DWIN64 -D_WIN32 -DWIN32 -DWANTED_CACTUS_HEIGHT=21
-       g++ -static -m64 -Ofast -lstdc++ .\main-amd.c -o kaktwoos-ocl-amd.exe -LD:\a\kaktwoos-cl\kaktwoos-cl\lib\x86_64\ -ID:\a\kaktwoos-cl\kaktwoos-cl\include\ -ID:\a\kaktwoos-cl\kaktwoos-cl\boinc -ID:\a\kaktwoos-cl\kaktwoos-cl\boinc\win\ -LD:\a\kaktwoos-cl\kaktwoos-cl\boinc\lib\win\ -lboinc_api -lboinc -lboinc_opencl -lOpenCL -D_WIN64 -DWIN64 -D_WIN32 -DWIN32 -DWANTED_CACTUS_HEIGHT=21
+       g++ -w -static -m64 -Ofast -lstdc++ .\main.c -o kaktwoos-ocl.exe -LD:\a\kaktwoos-cl\kaktwoos-cl\lib\x86_64\ -ID:\a\kaktwoos-cl\kaktwoos-cl\include\ -ID:\a\kaktwoos-cl\kaktwoos-cl\boinc\ -ID:\a\kaktwoos-cl\kaktwoos-cl\boinc\win\ -LD:\a\kaktwoos-cl\kaktwoos-cl\boinc\lib\win\ -lboinc_api -lboinc -lboinc_opencl -lOpenCL -D_WIN64 -DWIN64 -D_WIN32 -DWIN32 -DWANTED_CACTUS_HEIGHT=21
+       g++ -w -static -m64 -Ofast -lstdc++ .\main-amd.c -o kaktwoos-ocl-amd.exe -LD:\a\kaktwoos-cl\kaktwoos-cl\lib\x86_64\ -ID:\a\kaktwoos-cl\kaktwoos-cl\include\ -ID:\a\kaktwoos-cl\kaktwoos-cl\boinc\ -ID:\a\kaktwoos-cl\kaktwoos-cl\boinc\win\ -LD:\a\kaktwoos-cl\kaktwoos-cl\boinc\lib\win\ -lboinc_api -lboinc -lboinc_opencl -lOpenCL -D_WIN64 -DWIN64 -D_WIN32 -DWIN32 -DWANTED_CACTUS_HEIGHT=21
        dir
        
     - uses: actions/upload-artifact@v2
       with:
        name: kaktwoos-ocl-win
-       path: .\kaktwoos-ocl.exe
-       name: kaktwoos-ocl-amd-win
-       path: .\kaktwoos-ocl-amd.exe
+       path: | 
+        .\kaktwoos-ocl.exe
+        .\kaktwoos-ocl-amd.exe
 
   linux_opencl:
     name: opencl/release/linux
@@ -37,10 +37,9 @@ jobs:
     - name: build
       run: |
        apt-get update && apt-get install -y \
-       ocl-icd-opencl-dev g++ && \
+       ocl-icd-opencl-dev g++ libboinc7 libboinc-app libboinc-app-dev && \
        rm -rf /var/lib/apt/lists/*
-
-        g++ -static -Ofast -lstdc++ ./main.c -o kaktwoos-ocl -Iboinc/ -lboinc_api -lboinc -lboinc_opencl -lOpenCL -DWANTED_CACTUS_HEIGHT=21
+        g++ -w -Ofast -lstdc++ ./main.c -o kaktwoos-ocl -Iboinc/ -lboinc_api -lboinc -lboinc_opencl -lOpenCL -DWANTED_CACTUS_HEIGHT=21
         ls -la
     - uses: actions/upload-artifact@v2
       with:
