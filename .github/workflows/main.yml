@@ -37,7 +37,7 @@ jobs:
        apt-get update && apt-get install -y \
        ocl-icd-opencl-dev g++ libboinc7 && \
        rm -rf /var/lib/apt/lists/*
-       g++ -static -w -m64 -Ofast -lstdc++ ./main.c -o kaktwoos-ocl -Iboinc/ -Lboinc/lib/lin -lboinc_api -lboinc -lboinc_opencl -Wl,-Bdynamic -lpthread -lOpenCL -DWANTED_CACTUS_HEIGHT=21
+       g++ -static -w -m64 -O3 -lstdc++ ./main.c -o kaktwoos-ocl -Iboinc/ -Lboinc/lib/lin -lboinc_api -lboinc -lboinc_opencl -Wl,-Bdynamic -lpthread -lOpenCL -Wl,-dynamic-linker,/lib64/ld-linux-x86-64.so.2 -DWANTED_CACTUS_HEIGHT=21
        ls -la
     - uses: actions/upload-artifact@v2
       with:
