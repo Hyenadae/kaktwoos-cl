@@ -220,21 +220,19 @@ boinc_init_options(&options);
 	    void boinc_begin_critical_section();
         struct checkpoint_vars data_store;
 
-	    fread(&data_store, sizeof(data_store), 1, checkpoint_data);
+	fread(&data_store, sizeof(data_store), 1, checkpoint_data);
         offset = data_store.offset;
-	    start = data_store.start;
+	start = data_store.start;
         block = data_store.block;
-	    elapsed_chkpoint = data_store.elapsed_chkpoint;
+	elapsed_chkpoint = data_store.elapsed_chkpoint;
         total_seed_count = data_store.total_seed_count;
 
         fread(found_seeds, sizeof(cl_ulong), total_seed_count, checkpoint_data);
 	
-		fprintf(stderr,"Checkpoint loaded, task time %d s \n", elapsed_chkpoint);
-
+        fprintf(stderr,"Checkpoint loaded, task time %d s \n", elapsed_chkpoint);
+	fclose(checkpoint_data);
 	void boinc_end_critical_section();
     }
-
-    fclose(checkpoint_data);
 
     while (offset < end) {
 
@@ -274,7 +272,7 @@ boinc_init_options(&options);
 
            void boinc_begin_critical_section(); // Boinc should not interrupt this
 
-		   boinc_delete_file("kaktpoint.txt");
+           boinc_delete_file("kaktpoint.txt");
            FILE *checkpoint_data = boinc_fopen("kaktpoint.txt", "wb");
 
             struct checkpoint_vars data_store;
@@ -288,7 +286,7 @@ boinc_init_options(&options);
             fwrite(found_seeds, sizeof(cl_ulong), total_seed_count, checkpoint_data);
 
             chkpoint_ready = 0;
-	        fclose(checkpoint_data);
+	    fclose(checkpoint_data);
 
             double fraction_done = ((offset - start) / (seedrange));
             boinc_fraction_done(fraction_done);
