@@ -28,8 +28,6 @@
 #endif
 
 #include "boinc_api.h"
-#include "filesys.h"
-#include "util.h"
 
 #define KERNEL_BUFFER_SIZE (0x4000)
 #define MAX_SEED_BUFFER_SIZE (0x10000)
