@@ -213,28 +213,26 @@ boinc_init_options(&options);
     FILE *checkpoint_data = boinc_fopen("kaktpoint.txt", "rb");
 
     if (!checkpoint_data) {
-     fprintf(stderr,"No checkpoint to load\n");
+     fprintf(stderr, "No checkpoint to load\n");
      }
      else {
 
 	    void boinc_begin_critical_section();
         struct checkpoint_vars data_store;
 
-	    fread(&data_store, sizeof(data_store), 1, checkpoint_data);
+	fread(&data_store, sizeof(data_store), 1, checkpoint_data);
         offset = data_store.offset;
-	    start = data_store.start;
+	start = data_store.start;
         block = data_store.block;
-	    elapsed_chkpoint = data_store.elapsed_chkpoint;
+	elapsed_chkpoint = data_store.elapsed_chkpoint;
         total_seed_count = data_store.total_seed_count;
 
         fread(found_seeds, sizeof(cl_ulong), total_seed_count, checkpoint_data);
 	
-		fprintf(stderr,"Checkpoint loaded, task time %d s \n", elapsed_chkpoint);
-
+	fprintf(stderr, "Checkpoint loaded, task time %d s \n", elapsed_chkpoint);
+        fclose(checkpoint_data);
 	void boinc_end_critical_section();
     }
-
-    fclose(checkpoint_data);
 
     while (offset < end) {
 
@@ -255,12 +253,12 @@ boinc_init_options(&options);
 	end_time = clock();
 
         for (int i = 0; i < seed_count; i++) {
-            fprintf(stderr,"    Found seed: %"SCNd64 ", %llu, height: %d\n",
+            fprintf(stderr,"    Found seed: %" SCNd64 ", %llu, height: %d\n",
                     result[i],
                     result[i] & ((1ULL << 48ULL) - 1ULL),
                     (int)(result[i] >> 58ULL));
 
-            fprintf(stderr, "%"SCNd64 "\n", (cl_ulong)result[i]);
+            fprintf(stderr, "%" SCNd64 "\n", (cl_ulong)result[i]);
             found_seeds[total_seed_count++] = result[i];
 	    }
 
@@ -269,26 +267,26 @@ boinc_init_options(&options);
         block++;
         chkpoint_ready++;
 
-	    int boinc_time_to_checkpoint();
+	int boinc_time_to_checkpoint();
         if (chkpoint_ready >= 500 || boinc_time_to_checkpoint() ){  // 500 for 0.5bil seeds before checkpoint
 
            void boinc_begin_critical_section(); // Boinc should not interrupt this
 
-		   boinc_delete_file("kaktpoint.txt");
+	   boinc_delete_file("kaktpoint.txt");
            FILE *checkpoint_data = boinc_fopen("kaktpoint.txt", "wb");
 
             struct checkpoint_vars data_store;
             data_store.offset = offset;
-			data_store.start = start;
+	    data_store.start = start;
             data_store.block = block;
-			data_store.elapsed_chkpoint = (elapsed_chkpoint + (double)(end_time - start_time) / CLOCKS_PER_SEC);
+	    data_store.elapsed_chkpoint = (elapsed_chkpoint + (double)(end_time - start_time) / CLOCKS_PER_SEC);
             data_store.total_seed_count = total_seed_count;
 
             fwrite(&data_store, sizeof(data_store), 1, checkpoint_data);
             fwrite(found_seeds, sizeof(cl_ulong), total_seed_count, checkpoint_data);
 
             chkpoint_ready = 0;
-	        fclose(checkpoint_data);
+	    fclose(checkpoint_data);
 
             double fraction_done = ((offset - start) / (seedrange));
             boinc_fraction_done(fraction_done);
@@ -305,17 +303,17 @@ boinc_init_options(&options);
     void boinc_begin_critical_section();
 
     double elapsed = (double)(end_time - start_time) / CLOCKS_PER_SEC;
-    fprintf(stderr,"Speed: %.2fm/s \n", (offset - start) / (elapsed_chkpoint + elapsed) / 1000000);
+    fprintf(stderr, "Speed: %.2fm/s \n", (offset - start) / (elapsed_chkpoint + elapsed) / 1000000);
 
-    fprintf(stderr,"Done\n");
-    fprintf(stderr,"Processed %"SCNd64 " seeds in %f seconds\n",
+    fprintf(stderr, "Done\n");
+    fprintf(stderr, "Processed %"SCNd64 " seeds in %f seconds\n",
             end - start,
             elapsed_chkpoint + ((double)(end_time - start_time) / CLOCKS_PER_SEC));
 
     fprintf(stderr,"Found seeds: \n");
 
    for (int i = 0; i < total_seed_count; i++) {
-        fprintf(stderr,"    %"SCNd64 "\n", found_seeds[i]);
+        fprintf(stderr,"    %" SCNd64 "\n", found_seeds[i]);
     }
 
     boinc_delete_file("kaktpoint.txt");
