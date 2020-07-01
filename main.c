@@ -144,7 +144,7 @@ boinc_init_options(&options);
 
     cl_context_properties cps[3] = { CL_CONTEXT_PLATFORM, (cl_context_properties)platform_id, 0};
 	
-        context = clCreateContext(cps, 1, &device_ids, NULL, NULL, &err);
+    cl_context context = clCreateContext(cps, 1, &device_ids, NULL, NULL, &err);
     check(err, "clCreateContext ");
 
          cl_command_queue command_queue = clCreateCommandQueueWithProperties(context, device_ids, 0, &err);
