@@ -162,24 +162,24 @@ boinc_set_min_checkpoint_period(30);
     //fprintf(stderr,"DEVICE_NAME = %s\n", buffer);
 
     if (strcmp(navi10, buffer) == 0 ) {
-        printf("GPU Navi 10, compat time");
+        printf("GPU Navi 10, compat time\n");
         kernel_name = "kaktwoos.cl";
         }
 
     if (strcmp(navi12, buffer) == 0 ) {
-        printf("GPU Navi 12, compat time");
+        printf("GPU Navi 12, compat time\n");
         kernel_name = "kaktwoos.cl";
         }
 
     if (strcmp(navi21, buffer) == 0 ) {
-         printf("GPU Navi 21, compat time");
+         printf("GPU Navi 21, compat time\n");
          kernel_name = "kaktwoos.cl";
         }
 
 
     FILE *kernel_file = boinc_fopen(kernel_name, "r");
     if (!kernel_file) {
-        fprintf(stderr,"Failed to open kernel");
+        fprintf(stderr,"Failed to open kernel\n");
         exit(1);
     }
 

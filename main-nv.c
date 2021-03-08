@@ -125,18 +125,7 @@ boinc_set_min_checkpoint_period(30);
         chunkSeedBit5
     };
 
-	fflush(stderr);
-
-    FILE *kernel_file = boinc_fopen("kaktwoos-nv.cl", "r");
-    if (!kernel_file) {
-        fprintf(stderr,"Failed to open kernel");
-        exit(1);
-    }
-
-    char *kernel_src = (char *)malloc(KERNEL_BUFFER_SIZE);
-    size_t kernel_length = fread(kernel_src, 1, KERNEL_BUFFER_SIZE, kernel_file);
-
-    fclose(kernel_file);
+    fflush(stderr);
 
     cl_platform_id platform_id = NULL;
     cl_device_id device_ids;
@@ -145,8 +134,9 @@ boinc_set_min_checkpoint_period(30);
     num_devices_standalone = 1;
     cl_uint num_entries;
     num_entries = 1;
-    // Third arg is 1 for Nvidia
+    const char* kernel_name = "kaktwoos.cl";
 
+    // Third arg has 1 for NV, 2 for AMD, 3 for INT
     retval = boinc_get_opencl_ids(argc, argv, 1, &device_ids, &platform_id);
         if (retval) {
             //Probably standalone mode
@@ -162,6 +152,38 @@ boinc_set_min_checkpoint_period(30);
                 return 1;
             }
         }
+
+    char buffer[1024]; // Buffer to store rec'd GPU chip
+    char *rtx="RTX"; // CASE SENSITIVE!
+    char *gtx16="GTX 16";
+
+    clGetDeviceInfo(device_ids, CL_DEVICE_NAME, sizeof(buffer), buffer, NULL);
+    fprintf(stderr,"DEVICE_NAME = %s\n", buffer);
+
+    char* tmpBuffer = buffer+8;
+    tmpBuffer[3] = '\0';
+    if (strcmp(rtx, tmpBuffer) == 0 ) {
+        kernel_name = "kaktwoos-nv.cl";
+        fprintf(stderr,"Optimizations applied!\n");
+    }
+
+    tmpBuffer[3] = ' ';
+    tmpBuffer[6] = '\0';
+    if (strcmp(gtx16, tmpBuffer) == 0 ) {
+        kernel_name = "kaktwoos-nv.cl";
+        fprintf(stderr,"Optimizations applied!\n");
+    }
+
+    FILE *kernel_file = boinc_fopen(kernel_name, "r");
+    if (!kernel_file) {
+        fprintf(stderr,"Failed to open kernel\n");
+        exit(1);
+    }
+
+    char *kernel_src = (char *)malloc(KERNEL_BUFFER_SIZE);
+    size_t kernel_length = fread(kernel_src, 1, KERNEL_BUFFER_SIZE, kernel_file);
+
+    fclose(kernel_file);
 
     cl_context_properties cps[3] = { CL_CONTEXT_PLATFORM, (cl_context_properties)platform_id, 0};
 
@@ -206,7 +228,7 @@ boinc_set_min_checkpoint_period(30);
     check(clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&data), "clSetKernelArg (0) ");
     check(clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&seeds), "clSetKernelArg (1) ");
 
-    size_t work_unit_size = 1048576;
+    size_t work_unit_size= 1048576;
     size_t block_size = 256;
 
     arguments[1] = work_unit_size;
@@ -260,7 +282,7 @@ boinc_set_min_checkpoint_period(30);
         seedbuffer_size = sizeof(cl_ulong) + sizeof(cl_ulong) * seed_count;
 
         cl_ulong *result = (cl_ulong *)malloc(sizeof(cl_ulong) + sizeof(cl_ulong) * seed_count);
-	check(clEnqueueReadBuffer(command_queue, seeds, CL_TRUE, 0, seedbuffer_size, result, 0, NULL, NULL), "clEnqueueReadBuffer (seeds) ");
+	    check(clEnqueueReadBuffer(command_queue, seeds, CL_TRUE, 0, seedbuffer_size, result, 0, NULL, NULL), "clEnqueueReadBuffer (seeds) ");
 
 	end_time = clock();
 
