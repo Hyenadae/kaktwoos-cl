@@ -110,7 +110,8 @@ boinc_set_min_checkpoint_period(30);
         neighbor3,
         diagonalIndex,
         cactusHeight,
-        floor_level);
+        floor_level
+    );
 
     int arguments[10] = {
         0,
@@ -164,14 +165,14 @@ boinc_set_min_checkpoint_period(30);
     tmpBuffer[3] = '\0';
     if (strcmp(rtx, tmpBuffer) == 0 ) {
         kernel_name = "kaktwoos-nv.cl";
-        fprintf(stderr,"Optimizations applied!\n");
+        fprintf(stderr,"RTX, Optimizations applied!\n");
     }
 
     tmpBuffer[3] = ' ';
     tmpBuffer[6] = '\0';
     if (strcmp(gtx16, tmpBuffer) == 0 ) {
         kernel_name = "kaktwoos-nv.cl";
-        fprintf(stderr,"Optimizations applied!\n");
+        fprintf(stderr,"GTX 16XX, Optimizations applied!\n");
     }
 
     FILE *kernel_file = boinc_fopen(kernel_name, "r");

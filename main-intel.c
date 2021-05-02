@@ -110,7 +110,8 @@ boinc_set_min_checkpoint_period(30);
         neighbor3,
         diagonalIndex,
         cactusHeight,
-        floor_level);
+        floor_level
+    );
 
     int arguments[10] = {
         0,
@@ -145,6 +146,7 @@ boinc_set_min_checkpoint_period(30);
     num_devices_standalone = 1;
     cl_uint num_entries;
     num_entries = 1;
+
     // Third arg is 3 for Intel gpu
     retval = boinc_get_opencl_ids(argc, argv, 3, &device_ids, &platform_id);
         if (retval) {

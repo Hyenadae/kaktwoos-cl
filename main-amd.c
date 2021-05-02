@@ -110,7 +110,8 @@ boinc_set_min_checkpoint_period(30);
         neighbor3,
         diagonalIndex,
         cactusHeight,
-        floor_level);
+        floor_level
+    );
 
     int arguments[10] = {
         0,
@@ -157,25 +158,30 @@ boinc_set_min_checkpoint_period(30);
     char *navi10="gfx1010";
     char *navi12="gfx1012";
     char *navi21="gfx1030"; // Yes, RDNA2 is Navi 21, but GFX1030
+    char *navi22="gfx1031";
 
     clGetDeviceInfo(device_ids, CL_DEVICE_NAME, sizeof(buffer), buffer, NULL);
     //fprintf(stderr,"DEVICE_NAME = %s\n", buffer);
 
     if (strcmp(navi10, buffer) == 0 ) {
-        printf("GPU Navi 10, compat time\n");
+        fprintf(stderr,"GPU Navi 10, compat time\n");
         kernel_name = "kaktwoos.cl";
         }
 
     if (strcmp(navi12, buffer) == 0 ) {
-        printf("GPU Navi 12, compat time\n");
+        fprintf(stderr,"GPU Navi 12, compat time\n");
         kernel_name = "kaktwoos.cl";
         }
 
     if (strcmp(navi21, buffer) == 0 ) {
-         printf("GPU Navi 21, compat time\n");
+         fprintf(stderr,"GPU Navi 21, compat time\n");
          kernel_name = "kaktwoos.cl";
         }
 
+    if (strcmp(navi22, buffer) == 0 ) {
+         fprintf(stderr,"GPU Navi 22, compat time\n");
+         kernel_name = "kaktwoos.cl";
+        }
 
     FILE *kernel_file = boinc_fopen(kernel_name, "r");
     if (!kernel_file) {
